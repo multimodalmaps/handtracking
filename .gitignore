@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+handtracking_env/
 
 # C extensions
 *.so

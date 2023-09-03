@@ -1,0 +1,105 @@
+<!-- <!DOCTYPE html>
+<html>
+  <head>
+    <title>Hand Tracking for Zoom</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+  </head>
+  <body>
+    <video id="video" width="640" height="480" autoplay></video>
+    <canvas
+      id="videoCanvas"
+      width="640"
+      height="480"
+      style="position: absolute; top: 0; left: 0"
+    ></canvas>
+    <canvas
+      id="overlayCanvas"
+      width="640"
+      height="480"
+      style="position: absolute; top: 0; left: 0"
+    ></canvas>
+
+    <script>
+      const socket = io.connect("http://localhost:5000");
+      const video = document.getElementById("video");
+      const videoCanvas = document.getElementById("videoCanvas");
+      const videoCtx = videoCanvas.getContext("2d");
+      const overlayCanvas = document.getElementById("overlayCanvas");
+      const overlayCtx = overlayCanvas.getContext("2d");
+
+      navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
+        video.srcObject = stream;
+      });
+
+      video.addEventListener("play", function () {
+        setInterval(() => {
+          videoCtx.drawImage(
+            video,
+            0,
+            0,
+            videoCanvas.width,
+            videoCanvas.height
+          );
+          const frameData = videoCanvas.toDataURL("image/jpeg");
+          socket.emit("new_frame", frameData);
+        }, 1000 / 30); // 30 frames per second
+      });
+
+      const connections = [
+        [0, 1],
+        [1, 2],
+        [2, 3],
+        [3, 4],
+        [5, 6],
+        [6, 7],
+        [7, 8],
+        [9, 10],
+        [10, 11],
+        [11, 12],
+        [13, 14],
+        [14, 15],
+        [15, 16],
+        [17, 18],
+        [18, 19],
+        [19, 20],
+        [0, 5],
+        [5, 9],
+        [9, 13],
+        [13, 17],
+        [0, 17],
+      ];
+
+      socket.on("landmarks", function (landmarks) {
+        overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+        landmarks.forEach((hand) => {
+          hand.forEach((landmark, index) => {
+            overlayCtx.beginPath();
+            overlayCtx.arc(
+              landmark.x * overlayCanvas.width,
+              landmark.y * overlayCanvas.height,
+              5,
+              0,
+              2 * Math.PI
+            );
+            overlayCtx.fill();
+          });
+
+          connections.forEach(([startIdx, endIdx]) => {
+            const startLandmark = hand[startIdx];
+            const endLandmark = hand[endIdx];
+            overlayCtx.beginPath();
+            overlayCtx.moveTo(
+              startLandmark.x * overlayCanvas.width,
+              startLandmark.y * overlayCanvas.height
+            );
+            overlayCtx.lineTo(
+              endLandmark.x * overlayCanvas.width,
+              endLandmark.y * overlayCanvas.height
+            );
+            overlayCtx.stroke();
+          });
+        });
+      });
+    </script>
+  </body>
+</html> -->
